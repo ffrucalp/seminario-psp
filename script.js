@@ -2,13 +2,13 @@
 const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
 
 // Modelo por defecto. Podés cambiarlo por cualquiera de los disponibles en OpenRouter:
-//   - 'openai/gpt-oss-120b:free' (actual: modelo open-source de OpenAI, gratis)
+//   - 'tencent/hy3:free' (actual: modelo gratuito)
 //   - 'google/gemini-2.5-flash' (rápido, multimodal, gran contexto)
 //   - 'meta-llama/llama-3.3-70b-instruct' (buen razonamiento, económico)
 //   - 'anthropic/claude-3.5-sonnet' (excelente calidad)
 //   - 'openai/gpt-4o-mini' (barato y bueno)
 // Lista completa: https://openrouter.ai/models
-const OPENROUTER_MODEL = 'openai/gpt-oss-120b:free';
+const OPENROUTER_MODEL = 'tencent/hy3:free';
 
 // Metadata opcional pero recomendada por OpenRouter (para ranking en su directorio)
 const APP_REFERER = 'https://ucalp.edu.ar';

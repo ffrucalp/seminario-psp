@@ -100,7 +100,7 @@ La key se guarda en `localStorage` del navegador (clave: `openrouter_api_key`). 
 
 ### Modelo
 
-Por defecto: **`openai/gpt-oss-120b:free`** (gratuito en OpenRouter).
+Por defecto: **`tencent/hy3:free`** (gratuito en OpenRouter).
 
 Para cambiar de modelo, editar la constante `OPENROUTER_MODEL` en `script.js`. Alternativas sugeridas:
 - `google/gemini-2.5-flash` — rápido y económico
