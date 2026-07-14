@@ -88,27 +88,26 @@ Análisis y sugerencias sobre fragmentos de texto en cuatro dimensiones:
 
 ## Configuración
 
-### API Key de OpenRouter
+### API Key de Groq
 
-Al primer uso la app pide la API key de OpenRouter. Pasos:
+Al primer uso la app pide la API key de Groq (gratuita). Pasos:
 
-1. Crear cuenta en https://openrouter.ai/keys
-2. Generar una key (botón "Create Key")
+1. Crear cuenta en https://console.groq.com/keys
+2. Generar una key (botón "Create API Key")
 3. Pegarla en el modal de la aplicación
 
-La key se guarda en `localStorage` del navegador (clave: `openrouter_api_key`). Nunca sale del navegador.
+La key se guarda en `localStorage` del navegador (clave: `groq_api_key`). Nunca sale del navegador ni se sube al repositorio.
 
 ### Modelo
 
-Por defecto: **`tencent/hy3:free`** (gratuito en OpenRouter).
+Por defecto: **`groq/compound`** (gratuito y muy rápido en Groq; incluye búsqueda web y ejecución de código).
 
-Para cambiar de modelo, editar la constante `OPENROUTER_MODEL` en `script.js`. Alternativas sugeridas:
-- `google/gemini-2.5-flash` — rápido y económico
-- `meta-llama/llama-3.3-70b-instruct` — buen razonamiento, económico
-- `anthropic/claude-3.5-sonnet` — excelente calidad
-- `openai/gpt-4o-mini` — barato y bueno
+Para cambiar de modelo, editar la constante `GROQ_MODEL` en `script.js`. Alternativas sugeridas:
+- `groq/compound-mini` — variante más liviana
+- `llama-3.3-70b-versatile` — buen razonamiento
+- `llama-3.1-8b-instant` — ultra rápido, respuestas más simples
 
-Lista completa: https://openrouter.ai/models
+Lista completa: https://console.groq.com/docs/models
 
 ## Despliegue
 

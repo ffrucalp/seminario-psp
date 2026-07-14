@@ -1212,24 +1212,24 @@ Coll, C. (Ed.). (2010). Desarrollo, aprendizaje y enseñanza en la educación se
     <!-- Modal de configuración de API Key -->
     <div id="apiKeyModal" class="modal-overlay" style="display: none;">
         <div class="modal-content api-key-modal">
-            <h3>🔑 Configurar API Key de OpenRouter</h3>
-            <p>Para usar el asistente de IA, necesitás una API key de OpenRouter, que te da acceso a múltiples modelos de IA con una sola key.</p>
-            
+            <h3>🔑 Configurar API Key de Groq</h3>
+            <p>Para usar el asistente de IA necesitás una API key de Groq. Es <strong>gratuita</strong> y se obtiene en menos de un minuto.</p>
+
             <div class="api-key-steps">
                 <p><strong>¿Cómo obtenerla?</strong></p>
                 <ol>
-                    <li>Ingresá a <a href="https://openrouter.ai/keys" target="_blank">openrouter.ai/keys</a></li>
+                    <li>Ingresá a <a href="https://console.groq.com/keys" target="_blank">console.groq.com/keys</a></li>
                     <li>Creá una cuenta (o iniciá sesión con Google/GitHub)</li>
-                    <li>Hacé clic en "Create Key"</li>
+                    <li>Hacé clic en "Create API Key"</li>
                     <li>Asignale un nombre y copiala</li>
                     <li>Pegá la key abajo</li>
                 </ol>
-                <p><small>💡 Esta versión usa el modelo <strong>tencent/hy3:free</strong>, que es gratuito en OpenRouter.</small></p>
+                <p><small>💡 Esta versión usa el modelo <strong>groq/compound</strong>, gratuito y muy rápido en Groq.</small></p>
             </div>
-            
+
             <div class="api-key-input-group">
-                <label for="apiKeyInput">Tu API Key:</label>
-                <input type="password" id="apiKeyInput" placeholder="sk-or-v1-xxxxxxxxxxxxxxxx" autocomplete="off">
+                <label for="apiKeyInput">Tu API Key de Groq:</label>
+                <input type="password" id="apiKeyInput" placeholder="gsk_xxxxxxxxxxxxxxxx" autocomplete="off">
                 <small>La key se guarda localmente en tu navegador. No se comparte con nadie.</small>
             </div>
             

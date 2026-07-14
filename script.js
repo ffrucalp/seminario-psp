@@ -1,27 +1,22 @@
-// Configuración de la API de OpenRouter
-const OPENROUTER_API_URL = 'https://openrouter.ai/api/v1/chat/completions';
+// Configuración de la API de Groq (muy rápida, compatible con el formato OpenAI)
+const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
 
-// Modelo por defecto. Podés cambiarlo por cualquiera de los disponibles en OpenRouter:
-//   - 'tencent/hy3:free' (actual: modelo gratuito)
-//   - 'google/gemini-2.5-flash' (rápido, multimodal, gran contexto)
-//   - 'meta-llama/llama-3.3-70b-instruct' (buen razonamiento, económico)
-//   - 'anthropic/claude-3.5-sonnet' (excelente calidad)
-//   - 'openai/gpt-4o-mini' (barato y bueno)
-// Lista completa: https://openrouter.ai/models
-const OPENROUTER_MODEL = 'tencent/hy3:free';
-
-// Metadata opcional pero recomendada por OpenRouter (para ranking en su directorio)
-const APP_REFERER = 'https://ucalp.edu.ar';
-const APP_TITLE = 'Asistente de Tesina Psicopedagogía UCALP';
+// Modelo por defecto. Podés cambiarlo por cualquiera de los disponibles en Groq:
+//   - 'groq/compound' (actual: sistema con búsqueda web + código, muy rápido)
+//   - 'groq/compound-mini' (variante más liviana)
+//   - 'llama-3.3-70b-versatile' (buen razonamiento)
+//   - 'llama-3.1-8b-instant' (ultra rápido, respuestas más simples)
+// Lista completa: https://console.groq.com/docs/models
+const GROQ_MODEL = 'groq/compound';
 
 // Función para obtener la API key desde localStorage
 function getApiKey() {
-    return localStorage.getItem('openrouter_api_key');
+    return localStorage.getItem('groq_api_key');
 }
 
 // Función para guardar la API key
 function saveApiKey(key) {
-    localStorage.setItem('openrouter_api_key', key);
+    localStorage.setItem('groq_api_key', key);
 }
 
 // Función para verificar si hay API key configurada
@@ -729,21 +724,19 @@ async function callOpenRouterAPI(systemPrompt, conversationHistory, onChunk = nu
         }
         
         const requestBody = {
-            model: OPENROUTER_MODEL,
+            model: GROQ_MODEL,
             messages: messages,
             temperature: 0.7,
             max_tokens: 8192,
             top_p: 0.95,
             stream: !!onChunk
         };
-        
-        const response = await fetch(OPENROUTER_API_URL, {
+
+        const response = await fetch(GROQ_API_URL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`,
-                'HTTP-Referer': APP_REFERER,
-                'X-Title': APP_TITLE
+                'Authorization': `Bearer ${apiKey}`
             },
             body: JSON.stringify(requestBody)
         });
@@ -755,16 +748,11 @@ async function callOpenRouterAPI(systemPrompt, conversationHistory, onChunk = nu
             // Si es error de autenticación, pedir nueva key
             if (response.status === 401) {
                 showApiKeyModal();
-                throw new Error('API Key inválida. Por favor, verificá tu API key de OpenRouter.');
+                throw new Error('API Key inválida. Por favor, verificá tu API key de Groq.');
             }
-            
-            // Errores específicos de OpenRouter
-            if (response.status === 402) {
-                throw new Error('Sin créditos suficientes en OpenRouter. Cargá saldo en https://openrouter.ai/credits');
-            }
-            
+
             if (response.status === 429) {
-                throw new Error('Demasiadas peticiones. Esperá un momento e intentá de nuevo.');
+                throw new Error('Se alcanzó el límite de uso gratuito por el momento. Esperá un ratito e intentá de nuevo.');
             }
             
             throw new Error(`API Error: ${response.status} - ${JSON.stringify(errorData)}`);
