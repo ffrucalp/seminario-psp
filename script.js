@@ -457,33 +457,37 @@ async function sendOrientationMessage() {
     // Limpiar input
     input.value = '';
     
+    // Crear la burbuja del Tutor vacía y llenarla a medida que llega la respuesta
+    const contentEl = addMessageToChat(chatBox, '', 'assistant');
+
     try {
         // Preparar contexto con historial
         conversationHistory.orientacion.push({
             role: 'user',
             parts: [{ text: message }]
         });
-        
-        // Llamar a la API
+
         const response = await callOpenRouterAPI(
             SYSTEM_PROMPTS.orientacion,
-            conversationHistory.orientacion
+            conversationHistory.orientacion,
+            (partialText) => {
+                contentEl.innerHTML = formatMessage(partialText);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
         );
-        
-        // Agregar respuesta al historial y al chat
+
+        // Asegurar el render final completo y guardar en el historial
+        contentEl.innerHTML = formatMessage(response);
         conversationHistory.orientacion.push({
             role: 'model',
             parts: [{ text: response }]
         });
-        
-        addMessageToChat(chatBox, response, 'assistant');
-        
+
     } catch (error) {
         console.error('Error:', error);
-        addMessageToChat(
-            chatBox, 
-            'Lo siento, ocurrió un error al procesar tu consulta. Por favor, intentá nuevamente.',
-            'assistant'
+        // Reutilizar la burbuja del Tutor para mostrar el error (evita burbujas vacías duplicadas)
+        contentEl.innerHTML = formatMessage(
+            'Lo siento, ocurrió un error al procesar tu consulta. Por favor, intentá nuevamente.'
         );
     } finally {
         // Rehabilitar input
@@ -508,9 +512,12 @@ function addMessageToChat(chatBox, message, sender) {
     messageDiv.appendChild(label);
     messageDiv.appendChild(content);
     chatBox.appendChild(messageDiv);
-    
+
     // Scroll al final
     chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Devolver el contenedor de texto para poder actualizarlo (streaming)
+    return content;
 }
 
 // Generador de Contenido
@@ -672,7 +679,7 @@ Finalizá con recomendaciones concretas de mejora.`;
 }
 
 // Función para llamar a la API de OpenRouter
-async function callOpenRouterAPI(systemPrompt, conversationHistory) {
+async function callOpenRouterAPI(systemPrompt, conversationHistory, onChunk = null) {
     // Verificar que hay API key configurada
     const apiKey = getApiKey();
     if (!apiKey) {
@@ -704,7 +711,8 @@ async function callOpenRouterAPI(systemPrompt, conversationHistory) {
             messages: messages,
             temperature: 0.7,
             max_tokens: 8192,
-            top_p: 0.95
+            top_p: 0.95,
+            stream: !!onChunk
         };
         
         const response = await fetch(OPENROUTER_API_URL, {
@@ -739,14 +747,59 @@ async function callOpenRouterAPI(systemPrompt, conversationHistory) {
             
             throw new Error(`API Error: ${response.status} - ${JSON.stringify(errorData)}`);
         }
-        
+
+        // --- Modo streaming: se procesa la respuesta chunk por chunk (SSE) ---
+        if (onChunk) {
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let fullText = '';
+            let buffer = '';
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                buffer += decoder.decode(value, { stream: true });
+
+                // Los eventos SSE vienen separados por saltos de línea
+                const lines = buffer.split('\n');
+                buffer = lines.pop(); // guardar la última línea (posiblemente incompleta)
+
+                for (const line of lines) {
+                    const trimmed = line.trim();
+                    if (!trimmed || trimmed.startsWith(':')) continue; // ignorar comentarios/keep-alive
+                    if (!trimmed.startsWith('data:')) continue;
+
+                    const dataStr = trimmed.slice(5).trim();
+                    if (dataStr === '[DONE]') continue;
+
+                    try {
+                        const parsed = JSON.parse(dataStr);
+                        const delta = parsed.choices?.[0]?.delta?.content;
+                        if (delta) {
+                            fullText += delta;
+                            onChunk(fullText);
+                        }
+                    } catch (e) {
+                        // fragmento JSON incompleto: se ignora, llegará completo en el próximo chunk
+                    }
+                }
+            }
+
+            if (!fullText) {
+                throw new Error('No se pudo obtener una respuesta válida de la API');
+            }
+            return fullText;
+        }
+
+        // --- Modo sin streaming (respuesta completa de una vez) ---
         const data = await response.json();
-        
+
         // Extraer el texto de la respuesta (formato OpenAI)
         if (data.choices && data.choices.length > 0) {
             return data.choices[0].message.content;
         }
-        
+
         throw new Error('No se pudo obtener una respuesta válida de la API');
         
     } catch (error) {
