@@ -1111,7 +1111,48 @@ async function callOpenRouterAPI(systemPrompt, conversationHistory, onChunk = nu
 }
 
 // Función para formatear mensajes (convertir markdown a HTML)
+// Formato inline (negritas/cursivas) para el contenido de las celdas de tabla
+function formatInline(s) {
+    return s
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/__(.+?)__/g, '<strong>$1</strong>')
+        .replace(/\*([^*]+?)\*/g, '<em>$1</em>')
+        .replace(/`([^`]+?)`/g, '<code>$1</code>');
+}
+
+// Convierte un array de filas Markdown (| a | b |) en una <table> HTML
+function tableToHtml(rows) {
+    const parseRow = (r) => r.trim().replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim());
+    const header = parseRow(rows[0]);
+    const body = rows.slice(2).map(parseRow); // rows[1] es la fila separadora
+    let html = '<table class="md-table"><thead><tr>';
+    header.forEach(h => { html += '<th>' + formatInline(h) + '</th>'; });
+    html += '</tr></thead><tbody>';
+    body.forEach(cells => {
+        html += '<tr>';
+        for (let i = 0; i < header.length; i++) {
+            html += '<td>' + formatInline(cells[i] || '') + '</td>';
+        }
+        html += '</tr>';
+    });
+    html += '</tbody></table>';
+    return html;
+}
+
 function formatMessage(text) {
+    // Extraer tablas GFM primero y protegerlas con marcadores para que el
+    // resto de las conversiones no las rompa. Se reinsertan al final.
+    const tablas = [];
+    text = text.replace(/(^|\n)((?:[ \t]*\|[^\n]*\|[ \t]*(?:\n|$))+)/g, (m, pre, block) => {
+        const rows = block.split('\n').filter(r => r.trim());
+        // Debe tener al menos header + separador, y la 2ª fila debe ser separadora (---)
+        if (rows.length >= 2 && /-/.test(rows[1]) && /^[ \t]*\|?[\s:\-|]+\|?[ \t]*$/.test(rows[1])) {
+            const idx = tablas.push(tableToHtml(rows)) - 1;
+            return pre + '\n\n@@TBL' + idx + '@@\n\n';
+        }
+        return m;
+    });
+
     // Convertir negritas (debe ir antes que cursivas)
     text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
     text = text.replace(/__(.+?)__/g, '<strong>$1</strong>');
@@ -1148,6 +1189,10 @@ function formatMessage(text) {
     // Limpiar párrafos vacíos
     text = text.replace(/<p>\s*<\/p>/g, '');
     text = text.replace(/<p><\/p>/g, '');
+
+    // Reinsertar las tablas (quitando el <p> que las envuelva)
+    text = text.replace(/<p>\s*@@TBL(\d+)@@\s*<\/p>/g, (m, i) => tablas[i]);
+    text = text.replace(/@@TBL(\d+)@@/g, (m, i) => tablas[i]);
     
     return text;
 }

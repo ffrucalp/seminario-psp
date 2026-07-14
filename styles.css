@@ -1661,3 +1661,43 @@ body {
         max-width: none;
     }
 }
+
+/* ============================================================
+   Tablas en las respuestas de la IA (Markdown -> HTML)
+   ============================================================ */
+.md-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1rem 0;
+    font-size: 0.9rem;
+    display: block;
+    overflow-x: auto;
+    box-shadow: var(--shadow);
+    border-radius: 8px;
+}
+
+.md-table th,
+.md-table td {
+    border: 1px solid var(--border-color);
+    padding: 0.55rem 0.8rem;
+    text-align: left;
+    vertical-align: top;
+}
+
+.md-table thead th {
+    background: var(--light-blue);
+    color: var(--primary-color);
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.md-table tbody tr:nth-child(even) {
+    background: var(--background-color);
+}
+
+.md-table code {
+    background: var(--light-blue);
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+    font-size: 0.85em;
+}
