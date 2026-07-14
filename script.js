@@ -568,17 +568,28 @@ ${context ? `Contexto adicional:\n${context}\n` : ''}
 Por favor, orientá a la estudiante para que desarrolle la sección solicitada con criterios de rigor académico apropiados para una tesina bibliográfica de licenciatura en psicopedagogía.
 `;
         
-        // Llamar a la API
+        // Llamar a la API con streaming: se va mostrando el texto a medida que llega
+        let started = false;
         const response = await callOpenRouterAPI(systemPrompt, [
             { role: 'user', parts: [{ text: userPrompt }] }
-        ]);
-        
+        ], (partialText) => {
+            if (!started) {
+                // Al llegar el primer fragmento, ocultar el loading y mostrar la caja
+                loading.style.display = 'none';
+                outputBox.style.display = 'block';
+                outputBox.classList.add('has-content');
+                started = true;
+            }
+            outputBox.innerHTML = formatMessage(partialText);
+        });
+
+        // Render final y botón de copiar
         loading.style.display = 'none';
         outputBox.style.display = 'block';
         outputBox.classList.add('has-content');
         outputBox.innerHTML = formatMessage(response);
         copyButton.style.display = 'inline-flex';
-        
+
     } catch (error) {
         console.error('Error:', error);
         loading.style.display = 'none';
@@ -659,15 +670,26 @@ Proporcioná un análisis detallado y constructivo, organizando tus observacione
 Incluí ejemplos específicos del texto cuando sea pertinente.
 Finalizá con recomendaciones concretas de mejora.`;
         
+        let started = false;
         const response = await callOpenRouterAPI('', [
             { role: 'user', parts: [{ text: prompt }] }
-        ]);
-        
+        ], (partialText) => {
+            if (!started) {
+                // Al llegar el primer fragmento, ocultar el loading y mostrar la caja
+                loading.style.display = 'none';
+                resultsBox.style.display = 'block';
+                resultsBox.classList.add('has-content');
+                started = true;
+            }
+            resultsBox.innerHTML = formatMessage(partialText);
+        });
+
+        // Render final
         loading.style.display = 'none';
         resultsBox.style.display = 'block';
         resultsBox.classList.add('has-content');
         resultsBox.innerHTML = formatMessage(response);
-        
+
     } catch (error) {
         console.error('Error:', error);
         loading.style.display = 'none';
