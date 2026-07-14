@@ -1514,3 +1514,150 @@ body {
         display: block !important;
     }
 }
+
+/* ============================================================
+   Selector de carrera (encabezado)
+   ============================================================ */
+.logo-section {
+    flex-wrap: wrap;
+}
+
+.carrera-switcher {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    font-size: 0.9rem;
+}
+
+.carrera-switcher label {
+    opacity: 0.9;
+    font-weight: 600;
+}
+
+.carrera-select {
+    padding: 0.4rem 0.7rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+}
+
+.carrera-select option {
+    color: var(--text-color);
+    background: white;
+}
+
+/* ============================================================
+   Pantalla de selección inicial de carrera
+   ============================================================ */
+.carrera-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+}
+
+.carrera-screen-box {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    padding: 2.5rem 2rem;
+    max-width: 640px;
+    width: 100%;
+    text-align: center;
+}
+
+.carrera-screen-logo {
+    width: 90px;
+    height: 90px;
+    background: white;
+    border-radius: 50%;
+    padding: 5px;
+    box-shadow: 0 4px 12px rgba(0, 35, 149, 0.2);
+    margin-bottom: 1rem;
+}
+
+.carrera-screen-box h2 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 0.25rem;
+}
+
+.carrera-screen-uni {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+}
+
+.carrera-screen-sub {
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+}
+
+.carrera-options {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.carrera-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    flex: 1 1 160px;
+    max-width: 190px;
+    padding: 1.5rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 14px;
+    background: var(--background-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.carrera-option:hover {
+    border-color: var(--primary-color);
+    background: var(--light-blue);
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+}
+
+.carrera-option-icon {
+    font-size: 2.4rem;
+    line-height: 1;
+}
+
+.carrera-option-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.carrera-screen-note {
+    color: var(--text-light);
+    font-size: 0.85rem;
+}
+
+@media (max-width: 520px) {
+    .carrera-options {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .carrera-option {
+        flex-direction: row;
+        justify-content: center;
+        max-width: none;
+    }
+}

@@ -1,10 +1,14 @@
-# Asistente de Tesina Psicopedagógica - UCALP
+# Asistente de Tesina - UCALP
 
-Aplicación web para acompañar a estudiantes de la **Licenciatura en Psicopedagogía** de la Universidad Católica de La Plata en la elaboración de su **trabajo final de carrera bajo la modalidad de investigación bibliográfica**.
+Aplicación web para acompañar a estudiantes de la Universidad Católica de La Plata en la elaboración de su **trabajo final de carrera bajo la modalidad de investigación bibliográfica**. Soporta tres carreras: **Psicología**, **Psicopedagogía** y **Filosofía**.
 
 ## ¿Qué es esto?
 
-Una SPA estática (HTML + CSS + JS, sin build, sin backend) que combina recursos formativos con asistencia de IA mediante OpenRouter, con un enfoque **tutorial**: la IA orienta a la estudiante con preguntas y criterios para que desarrolle su propio pensamiento, **no escribe el trabajo por ella**.
+Una SPA estática (HTML + CSS + JS, sin build, sin backend) que combina recursos formativos con asistencia de IA mediante Groq, con un enfoque **tutorial**: la IA orienta a la estudiante con preguntas y criterios para que desarrolle su propio pensamiento, **no escribe el trabajo por ella**.
+
+## Carreras
+
+Al entrar, el alumno elige su carrera (se recuerda y se puede cambiar desde el encabezado). Las tres comparten la misma metodología de tesina bibliográfica; solo cambia el contenido disciplinar (autores, áreas temáticas, marcos de referencia y ejemplos). Todo eso se configura en el objeto `CARRERAS` de `script.js`: para agregar o ajustar una carrera, se edita ese objeto.
 
 ## Modalidad de trabajo
 

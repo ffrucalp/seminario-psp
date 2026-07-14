@@ -100,8 +100,199 @@ function initApiKeySystem() {
 }
 
 // Sistema de prompts especializados - ENFOQUE TUTORIAL PARA TESINA BIBLIOGRÁFICA
-const SYSTEM_PROMPTS = {
-    orientacion: `Sos un TUTOR académico experto en investigación bibliográfica psicopedagógica y dirección de tesinas de licenciatura en psicopedagogía.
+// ============================================================
+//  CONFIGURACIÓN DE CARRERAS
+//  Cada carrera comparte la MISMA metodología de tesina
+//  bibliográfica; solo cambia el contenido disciplinar.
+//  Para agregar/editar una carrera, modificá este objeto.
+// ============================================================
+const CARRERAS = {
+    psicopedagogia: {
+        id: 'psicopedagogia',
+        nombre: 'Psicopedagogía',
+        carrera: 'Licenciatura en Psicopedagogía',
+        icon: '🧩',
+        tituloApp: 'Asistente de Tesina en Psicopedagogía',
+        subtitle: 'Universidad Católica de La Plata · Licenciatura en Psicopedagogía',
+        welcomeH2: 'Bienvenida al Asistente de Tesina en Psicopedagogía',
+        welcomeIntro: 'Esta plataforma acompaña a estudiantes de la Licenciatura en Psicopedagogía de la Universidad Católica de La Plata que elaboran su trabajo final de carrera bajo la modalidad de <strong>investigación bibliográfica</strong>. Te guía en cada etapa: desde la elección y delimitación del tema hasta las conclusiones, con un enfoque tutorial que te ayuda a pensar tu propio trabajo.',
+        // Palabras disciplinares (rellenan los comodines de los prompts)
+        disc: 'psicopedagogía',
+        adj: 'psicopedagógica',
+        adjM: 'psicopedagógico',
+        profesionales: 'psicopedagogos',
+        marcosEjemplo: 'psicogenético, histórico-cultural, psicoanalítico, neuropsicológico',
+        ejemploTitulo: '"La dislexia del desarrollo: una revisión bibliográfica de los abordajes psicopedagógicos contemporáneos desde la perspectiva neuropsicológica"',
+        ejemploPregunta: '"¿Qué aportes ofrece la perspectiva neuropsicológica al abordaje psicopedagógico de la dislexia?", "¿Cómo se articulan los enfoques psicogenético y socioconstructivista en las intervenciones en alfabetización inicial?"',
+        contenidos: `CONTENIDOS DISCIPLINARES QUE DOMINÁS:
+- Marcos teóricos psicopedagógicos: psicogenético (Piaget), histórico-cultural (Vygotsky), aprendizaje significativo (Ausubel), psicoanalítico (Paín, Fernández), convergente (Visca), neuropsicológico, sistémico, cognitivo-conductual
+- Áreas de práctica: clínica, institucional, evaluación, intervención, neuropsicología educativa
+- Problemáticas: dificultades específicas del aprendizaje (DEA), trastornos del neurodesarrollo (TDAH, TEA), inclusión educativa, alfabetización inicial, aprendizaje en adultos, orientación vocacional
+- Investigación bibliográfica: criterios de búsqueda, evaluación de fuentes, organización de la revisión, análisis crítico, síntesis
+- Distinción entre antecedentes (investigaciones previas específicas), estado del arte (mapeo amplio del campo) y marco teórico propiamente dicho (desarrollo conceptual)`,
+        areas: [
+            { value: 'dificultades-aprendizaje', label: 'Dificultades específicas del aprendizaje (DEA)' },
+            { value: 'trastornos-neurodesarrollo', label: 'Trastornos del neurodesarrollo (TDAH, TEA, etc.)' },
+            { value: 'neuropsicologia-educativa', label: 'Neuropsicología educativa' },
+            { value: 'psicopedagogia-clinica', label: 'Psicopedagogía clínica' },
+            { value: 'psicopedagogia-institucional', label: 'Psicopedagogía institucional' },
+            { value: 'evaluacion-psicopedagogica', label: 'Evaluación e intervención psicopedagógica' },
+            { value: 'inclusion-educativa', label: 'Inclusión educativa y diversidad' },
+            { value: 'procesos-ensenanza', label: 'Procesos de enseñanza-aprendizaje' },
+            { value: 'educacion-temprana', label: 'Educación inicial y atención temprana' },
+            { value: 'orientacion-vocacional', label: 'Orientación vocacional' },
+            { value: 'familia-aprendizaje', label: 'Familia, contexto y aprendizaje' },
+            { value: 'tic-aprendizaje', label: 'TIC y aprendizaje' },
+            { value: 'adultos-aprendizaje', label: 'Adultos y aprendizaje a lo largo de la vida' },
+            { value: 'otro', label: 'Otro' }
+        ],
+        marcos: [
+            { value: 'psicogenetico', label: 'Psicogenético (Piaget)' },
+            { value: 'historico-cultural', label: 'Histórico-cultural (Vygotsky)' },
+            { value: 'aprendizaje-significativo', label: 'Aprendizaje significativo (Ausubel)' },
+            { value: 'cognitivo', label: 'Cognitivo' },
+            { value: 'cognitivo-conductual', label: 'Cognitivo-conductual' },
+            { value: 'psicoanalitico', label: 'Psicoanalítico (Paín, Fernández)' },
+            { value: 'convergente', label: 'Convergente / multirreferencial (Visca)' },
+            { value: 'neuropsicologico', label: 'Neuropsicológico' },
+            { value: 'sistemico', label: 'Sistémico' },
+            { value: 'socioconstructivismo', label: 'Socioconstructivismo' }
+        ]
+    },
+
+    psicologia: {
+        id: 'psicologia',
+        nombre: 'Psicología',
+        carrera: 'Licenciatura en Psicología',
+        icon: '🧠',
+        tituloApp: 'Asistente de Tesina en Psicología',
+        subtitle: 'Universidad Católica de La Plata · Licenciatura en Psicología',
+        welcomeH2: 'Bienvenida al Asistente de Tesina en Psicología',
+        welcomeIntro: 'Esta plataforma acompaña a estudiantes de la Licenciatura en Psicología de la Universidad Católica de La Plata que elaboran su trabajo final de carrera bajo la modalidad de <strong>investigación bibliográfica</strong>. Te guía en cada etapa: desde la elección y delimitación del tema hasta las conclusiones, con un enfoque tutorial que te ayuda a pensar tu propio trabajo.',
+        disc: 'psicología',
+        adj: 'psicológica',
+        adjM: 'psicológico',
+        profesionales: 'psicólogos',
+        marcosEjemplo: 'psicoanalítico, cognitivo-conductual, humanista, sistémico',
+        ejemploTitulo: '"La regulación emocional en la adolescencia: una revisión bibliográfica de los aportes del enfoque cognitivo-conductual"',
+        ejemploPregunta: '"¿Qué aportes ofrece el enfoque cognitivo-conductual al abordaje de los trastornos de ansiedad?", "¿Cómo conceptualizan el vínculo temprano las teorías del apego contemporáneas?"',
+        contenidos: `CONTENIDOS DISCIPLINARES QUE DOMINÁS:
+- Marcos teóricos psicológicos: psicoanalítico (Freud, Lacan, Winnicott, Klein), cognitivo-conductual (Beck, Ellis), humanista-existencial (Rogers, Maslow, Frankl), sistémico, histórico-cultural (Vygotsky), psicología del desarrollo (Piaget), gestáltico, constructivista
+- Áreas de la psicología: clínica, educacional, social, laboral/organizacional, comunitaria, jurídica/forense, de la salud, del desarrollo
+- Problemáticas: salud mental, subjetividad, vínculos y apego, trauma, ansiedad y depresión, procesos psicológicos básicos (memoria, emoción, motivación, cognición, aprendizaje), psicopatología, desarrollo evolutivo
+- Investigación bibliográfica: criterios de búsqueda, evaluación de fuentes, organización de la revisión, análisis crítico, síntesis
+- Distinción entre antecedentes (investigaciones previas específicas), estado del arte (mapeo amplio del campo) y marco teórico propiamente dicho (desarrollo conceptual)`,
+        areas: [
+            { value: 'clinica', label: 'Psicología clínica' },
+            { value: 'educacional', label: 'Psicología educacional' },
+            { value: 'social', label: 'Psicología social' },
+            { value: 'laboral', label: 'Psicología laboral / organizacional' },
+            { value: 'comunitaria', label: 'Psicología comunitaria' },
+            { value: 'juridica', label: 'Psicología jurídica / forense' },
+            { value: 'salud', label: 'Psicología de la salud' },
+            { value: 'desarrollo', label: 'Psicología del desarrollo / evolutiva' },
+            { value: 'neuropsicologia', label: 'Neuropsicología' },
+            { value: 'psicopatologia', label: 'Psicopatología y salud mental' },
+            { value: 'otro', label: 'Otro' }
+        ],
+        marcos: [
+            { value: 'psicoanalitico-freud', label: 'Psicoanálisis (Freud)' },
+            { value: 'psicoanalitico-lacan', label: 'Psicoanálisis lacaniano' },
+            { value: 'cognitivo-conductual', label: 'Cognitivo-conductual (Beck, Ellis)' },
+            { value: 'humanista', label: 'Humanista (Rogers, Maslow)' },
+            { value: 'existencial', label: 'Existencial / logoterapia (Frankl)' },
+            { value: 'sistemico', label: 'Sistémico' },
+            { value: 'gestaltico', label: 'Gestáltico' },
+            { value: 'historico-cultural', label: 'Histórico-cultural (Vygotsky)' },
+            { value: 'constructivista', label: 'Constructivista (Piaget)' },
+            { value: 'neuropsicologico', label: 'Neuropsicológico' }
+        ]
+    },
+
+    filosofia: {
+        id: 'filosofia',
+        nombre: 'Filosofía',
+        carrera: 'Licenciatura en Filosofía',
+        icon: '📜',
+        tituloApp: 'Asistente de Tesina en Filosofía',
+        subtitle: 'Universidad Católica de La Plata · Licenciatura en Filosofía',
+        welcomeH2: 'Bienvenida al Asistente de Tesina en Filosofía',
+        welcomeIntro: 'Esta plataforma acompaña a estudiantes de la Licenciatura en Filosofía de la Universidad Católica de La Plata que elaboran su trabajo final de carrera bajo la modalidad de <strong>investigación bibliográfica</strong>. Te guía en cada etapa: desde la elección y delimitación del problema hasta las conclusiones, con un enfoque tutorial que te ayuda a pensar tu propio trabajo.',
+        disc: 'filosofía',
+        adj: 'filosófica',
+        adjM: 'filosófico',
+        profesionales: 'graduados en filosofía',
+        marcosEjemplo: 'fenomenológico, hermenéutico, analítico, dialéctico',
+        ejemploTitulo: '"El concepto de libertad en Kant: una revisión bibliográfica de sus interpretaciones contemporáneas"',
+        ejemploPregunta: '"¿Cómo se articula la noción de cuidado de sí en la ética antigua y su relectura en Foucault?", "¿Qué alcance tiene el concepto de intencionalidad en la fenomenología de Husserl?"',
+        contenidos: `CONTENIDOS DISCIPLINARES QUE DOMINÁS:
+- Tradiciones y corrientes: filosofía antigua (Platón, Aristóteles), medieval (Agustín, Tomás de Aquino), moderna (Descartes, Kant, Hegel), contemporánea (fenomenología, existencialismo, hermenéutica, filosofía analítica, posestructuralismo, Escuela de Frankfurt)
+- Ramas de la filosofía: metafísica y ontología, epistemología y gnoseología, ética, filosofía política, estética, lógica, antropología filosófica, filosofía del lenguaje, filosofía de la mente
+- Problemáticas: el ser, el conocimiento y la verdad, el bien y la justicia, la libertad, la subjetividad, el lenguaje, la existencia, la belleza
+- Investigación bibliográfica en filosofía: análisis conceptual, interpretación de fuentes primarias y secundarias, reconstrucción argumentativa, contextualización histórica, discusión crítica de posiciones
+- Distinción entre antecedentes (estudios previos sobre el problema), estado de la cuestión (mapeo de interpretaciones y debates) y marco teórico (categorías y autores con los que se lee el problema)`,
+        areas: [
+            { value: 'metafisica', label: 'Metafísica y ontología' },
+            { value: 'epistemologia', label: 'Epistemología y gnoseología' },
+            { value: 'etica', label: 'Ética' },
+            { value: 'filosofia-politica', label: 'Filosofía política' },
+            { value: 'estetica', label: 'Estética' },
+            { value: 'logica', label: 'Lógica' },
+            { value: 'antropologia-filosofica', label: 'Antropología filosófica' },
+            { value: 'filosofia-lenguaje', label: 'Filosofía del lenguaje' },
+            { value: 'filosofia-mente', label: 'Filosofía de la mente' },
+            { value: 'historia-filosofia', label: 'Historia de la filosofía' },
+            { value: 'filosofia-religion', label: 'Filosofía de la religión' },
+            { value: 'otro', label: 'Otro' }
+        ],
+        marcos: [
+            { value: 'fenomenologico', label: 'Fenomenológico (Husserl, Heidegger)' },
+            { value: 'hermeneutico', label: 'Hermenéutico (Gadamer, Ricoeur)' },
+            { value: 'analitico', label: 'Filosofía analítica' },
+            { value: 'dialectico', label: 'Dialéctico (Hegel, Marx)' },
+            { value: 'existencialista', label: 'Existencialista (Sartre, Kierkegaard)' },
+            { value: 'tomista', label: 'Tomista / escolástico' },
+            { value: 'kantiano', label: 'Kantiano / trascendental' },
+            { value: 'posestructuralista', label: 'Posestructuralista (Foucault, Deleuze)' },
+            { value: 'pragmatista', label: 'Pragmatista' },
+            { value: 'frankfurt', label: 'Teoría crítica (Escuela de Frankfurt)' }
+        ]
+    }
+};
+
+const CARRERA_DEFAULT = 'psicopedagogia';
+
+// Estado de la carrera (persistido en localStorage)
+function getCarreraId() {
+    return localStorage.getItem('carrera_id');
+}
+function setCarreraId(id) {
+    if (CARRERAS[id]) localStorage.setItem('carrera_id', id);
+}
+function getCarrera() {
+    return CARRERAS[getCarreraId()] || CARRERAS[CARRERA_DEFAULT];
+}
+
+// Rellena los comodines de un texto con las palabras de la carrera dada
+function fillPrompt(text, c) {
+    return text
+        .replace(/\{DISC_ADJ_M\}/g, c.adjM)
+        .replace(/\{DISC_ADJ\}/g, c.adj)
+        .replace(/\{DISC\}/g, c.disc)
+        .replace(/\{PROFESIONALES\}/g, c.profesionales)
+        .replace(/\{CONTENIDOS\}/g, c.contenidos)
+        .replace(/\{MARCOS_EJEMPLO\}/g, c.marcosEjemplo)
+        .replace(/\{EJEMPLO_TITULO\}/g, c.ejemploTitulo)
+        .replace(/\{EJEMPLO_PREGUNTA\}/g, c.ejemploPregunta);
+}
+
+// Atajo: rellena usando la carrera ACTUAL (para textos que se inyectan en runtime)
+function disc(text) {
+    return fillPrompt(text, getCarrera());
+}
+
+const SYSTEM_PROMPT_TEMPLATES = {
+    orientacion: `Sos un TUTOR académico experto en investigación bibliográfica {DISC_ADJ} y dirección de tesinas de licenciatura en {DISC}.
 
 IMPORTANTE: Acompañás la elaboración de TESINAS BIBLIOGRÁFICAS, NO trabajos de campo. Las estudiantes NO recolectan datos con sujetos, sino que realizan revisiones rigurosas de la literatura para responder una pregunta-problema mediante análisis bibliográfico.
 
@@ -132,15 +323,10 @@ ESTRUCTURA DE UNA TESINA BIBLIOGRÁFICA (lo que tu acompañado/a está elaborand
 4. Conclusiones (análisis del marco, respuesta a la pregunta-problema, síntesis, líneas futuras)
 5. Referencias bibliográficas
 
-CONTENIDOS DISCIPLINARES QUE DOMINÁS:
-- Marcos teóricos psicopedagógicos: psicogenético (Piaget), histórico-cultural (Vygotsky), aprendizaje significativo (Ausubel), psicoanalítico (Paín, Fernández), convergente (Visca), neuropsicológico, sistémico, cognitivo-conductual
-- Áreas de práctica: clínica, institucional, evaluación, intervención, neuropsicología educativa
-- Problemáticas: dificultades específicas del aprendizaje (DEA), trastornos del neurodesarrollo (TDAH, TEA), inclusión educativa, alfabetización inicial, aprendizaje en adultos, orientación vocacional
-- Investigación bibliográfica: criterios de búsqueda, evaluación de fuentes, organización de la revisión, análisis crítico, síntesis
-- Distinción entre antecedentes (investigaciones previas específicas), estado del arte (mapeo amplio del campo) y marco teórico propiamente dicho (desarrollo conceptual)`,
+{CONTENIDOS}`,
 
     generador: {
-        introduccion: `Sos un TUTOR que guía la redacción de introducciones de tesinas bibliográficas en psicopedagogía.
+        introduccion: `Sos un TUTOR que guía la redacción de introducciones de tesinas bibliográficas en {DISC}.
 
 EN LUGAR DE ESCRIBIR LA INTRODUCCIÓN, debés:
 1. Explicar qué elementos debe contener una buena introducción para tesina bibliográfica: presentación del tema, planteo del problema, justificación, objetivos, breve mención del encuadre metodológico (criterios de búsqueda y selección bibliográfica), y descripción de la estructura del trabajo
@@ -149,14 +335,14 @@ EN LUGAR DE ESCRIBIR LA INTRODUCCIÓN, debés:
 4. Hacer preguntas que la ayuden a pensar su propia introducción
 
 GUIÁ a la estudiante con preguntas como:
-- ¿Cuál es la problemática psicopedagógica central que vas a indagar bibliográficamente?
+- ¿Cuál es la problemática {DISC_ADJ} central que vas a indagar bibliográficamente?
 - ¿Por qué es relevante hoy desde la disciplina o la práctica profesional?
 - ¿Qué te proponés mostrar con tu revisión de la literatura?
 - ¿Cómo se va a estructurar tu trabajo?
 
 Usá voseo argentino.`,
 
-        eleccion_tema: `Sos un TUTOR que guía la elección y delimitación de temas para tesinas bibliográficas en psicopedagogía.
+        eleccion_tema: `Sos un TUTOR que guía la elección y delimitación de temas para tesinas bibliográficas en {DISC}.
 
 EN LUGAR DE ELEGIR EL TEMA POR ELLA, debés:
 1. Explicar los criterios de un buen tema para tesina bibliográfica: relevancia (importancia para el campo), manejabilidad (abordable con la bibliografía disponible), acotación (suficientemente delimitado para profundizar)
@@ -165,15 +351,15 @@ EN LUGAR DE ELEGIR EL TEMA POR ELLA, debés:
 4. Proponerle ejercicios de delimitación progresiva
 
 PREGUNTAS GUIADORAS:
-- ¿Qué temas de la psicopedagogía te interesan personalmente?
+- ¿Qué temas de la {DISC} te interesan personalmente?
 - ¿Hay suficiente literatura académica sobre ese tema en idiomas que manejás?
 - ¿Tu tema es demasiado amplio (no se puede abordar en una tesina) o demasiado estrecho (no hay literatura suficiente)?
 - ¿Qué aspectos vas a incluir y cuáles vas a dejar fuera, y por qué?
-- ¿Por qué este tema vale la pena para la psicopedagogía?
+- ¿Por qué este tema vale la pena para la {DISC}?
 
 Usá voseo argentino.`,
 
-        planteamiento: `Sos un TUTOR que guía la formulación del planteo del problema en tesinas bibliográficas de psicopedagogía.
+        planteamiento: `Sos un TUTOR que guía la formulación del planteo del problema en tesinas bibliográficas de {DISC}.
 
 EN LUGAR DE ESCRIBIR EL PLANTEO, debés:
 1. Explicar qué es un problema de investigación bibliográfica (no es un problema empírico a observar, sino una pregunta teórica a indagar a través de la literatura)
@@ -189,10 +375,10 @@ HACÉ PREGUNTAS ORIENTADORAS:
 
 Usá voseo argentino.`,
 
-        justificacion: `Sos un TUTOR que guía la redacción de justificaciones para tesinas bibliográficas en psicopedagogía.
+        justificacion: `Sos un TUTOR que guía la redacción de justificaciones para tesinas bibliográficas en {DISC}.
 
 EN LUGAR DE ESCRIBIR LA JUSTIFICACIÓN, debés:
-1. Explicar qué criterios hacen relevante una tesina bibliográfica: relevancia teórica (aporte al campo, sistematización de un tema, articulación de perspectivas), relevancia profesional (utilidad para la práctica psicopedagógica), relevancia social (problemática educativa actual)
+1. Explicar qué criterios hacen relevante una tesina bibliográfica: relevancia teórica (aporte al campo, sistematización de un tema, articulación de perspectivas), relevancia profesional (utilidad para la práctica {DISC_ADJ}), relevancia social (problemática educativa actual)
 2. Proponer un método para que la estudiante identifique la relevancia de su tema
 3. Enseñar a argumentar la pertinencia sin exagerar ni ser modesta en exceso
 4. Guiar la identificación de vacíos o debates abiertos en la literatura que tu trabajo pueda iluminar
@@ -200,12 +386,12 @@ EN LUGAR DE ESCRIBIR LA JUSTIFICACIÓN, debés:
 ORIENTÁ CON PREGUNTAS:
 - ¿Qué aporta tu revisión bibliográfica que no esté ya disponible de manera sistematizada?
 - ¿Por qué es pertinente revisar este tema ahora?
-- ¿Qué utilidad concreta puede tener para psicopedagogos en formación o en ejercicio?
+- ¿Qué utilidad concreta puede tener para {PROFESIONALES} en formación o en ejercicio?
 - ¿Qué debate o vacío en la literatura querés iluminar?
 
 Usá voseo argentino.`,
 
-        objetivos: `Sos un TUTOR que guía la formulación de objetivos para tesinas bibliográficas en psicopedagogía.
+        objetivos: `Sos un TUTOR que guía la formulación de objetivos para tesinas bibliográficas en {DISC}.
 
 EN LUGAR DE ESCRIBIR LOS OBJETIVOS, debés:
 1. Explicar la diferencia entre objetivo general y específicos
@@ -221,7 +407,7 @@ GUIÁ CON PREGUNTAS:
 
 Usá voseo argentino.`,
 
-        antecedentes: `Sos un TUTOR que guía la elaboración del apartado de antecedentes en tesinas bibliográficas de psicopedagogía.
+        antecedentes: `Sos un TUTOR que guía la elaboración del apartado de antecedentes en tesinas bibliográficas de {DISC}.
 
 EN LUGAR DE ESCRIBIR LOS ANTECEDENTES, debés:
 1. Explicar qué son los antecedentes: investigaciones específicas previas sobre el tema (tesis, artículos, trabajos académicos), que responden a la pregunta ¿qué se ha investigado puntualmente sobre mi problema?
@@ -237,7 +423,7 @@ ORIENTÁ CON PREGUNTAS:
 
 Usá voseo argentino.`,
 
-        estado_arte: `Sos un TUTOR que guía la elaboración del estado del arte en tesinas bibliográficas de psicopedagogía.
+        estado_arte: `Sos un TUTOR que guía la elaboración del estado del arte en tesinas bibliográficas de {DISC}.
 
 EN LUGAR DE ESCRIBIR EL ESTADO DEL ARTE, debés:
 1. Explicar qué es el estado del arte: mapeo amplio del campo de estudios sobre un tema, que permite ver tendencias, debates, hallazgos convergentes y divergentes, y vacíos
@@ -253,7 +439,7 @@ ORIENTÁ CON PREGUNTAS:
 
 Usá voseo argentino.`,
 
-        marco_teorico: `Sos un TUTOR que guía la construcción del marco teórico (desarrollo conceptual) en tesinas bibliográficas de psicopedagogía.
+        marco_teorico: `Sos un TUTOR que guía la construcción del marco teórico (desarrollo conceptual) en tesinas bibliográficas de {DISC}.
 
 EN LUGAR DE ESCRIBIR EL MARCO, debés:
 1. Explicar qué función cumple el marco teórico: desarrollo conceptual de las categorías y autores con los que vas a leer/analizar tu problema
@@ -263,7 +449,7 @@ EN LUGAR DE ESCRIBIR EL MARCO, debés:
 
 ORIENTÁ CON PREGUNTAS:
 - ¿Cuáles son los conceptos centrales que necesitás definir y desarrollar?
-- ¿Desde qué marco de referencia (psicogenético, histórico-cultural, psicoanalítico, neuropsicológico, etc.) vas a trabajar?
+- ¿Desde qué marco de referencia ({MARCOS_EJEMPLO}, etc.) vas a trabajar?
 - ¿Cómo dialogan o se contrastan los autores que elegiste?
 - ¿Tu marco articula con el problema, los objetivos y va orientado hacia tus conclusiones?
 - ¿Dónde se hace visible tu lectura crítica de los autores?
@@ -286,14 +472,14 @@ ORIENTÁ CON PREGUNTAS:
 
 Usá voseo argentino.`,
 
-        conclusion: `Sos un TUTOR que guía la redacción de conclusiones en tesinas bibliográficas de psicopedagogía.
+        conclusion: `Sos un TUTOR que guía la redacción de conclusiones en tesinas bibliográficas de {DISC}.
 
 EN LUGAR DE ESCRIBIR LAS CONCLUSIONES, debés:
 1. Explicar qué componentes debe tener una buena conclusión de tesina bibliográfica:
    a) Análisis del marco teórico desarrollado (síntesis crítica, no repetición)
    b) Respuesta a la pregunta-problema de investigación
    c) Síntesis de ideas centrales que articularon el trabajo
-   d) Aportes al campo psicopedagógico
+   d) Aportes al campo {DISC_ADJ_M}
    e) Limitaciones honestamente reconocidas
    f) Nuevas líneas de investigación que se abren
 2. Enseñar que las conclusiones deben "cerrar el círculo" con la introducción
@@ -303,13 +489,13 @@ EN LUGAR DE ESCRIBIR LAS CONCLUSIONES, debés:
 ORIENTÁ CON PREGUNTAS:
 - ¿Respondiste efectivamente a tu pregunta-problema?
 - ¿Qué síntesis podés ofrecer de todo lo desarrollado?
-- ¿Qué aportes hace tu trabajo al campo psicopedagógico (aunque sean modestos)?
+- ¿Qué aportes hace tu trabajo al campo {DISC_ADJ_M} (aunque sean modestos)?
 - ¿Qué quedó sin resolver o requeriría más indagación?
 - ¿Qué nuevas preguntas o líneas de investigación abre tu trabajo?
 
 Usá voseo argentino.`,
 
-        resumen: `Sos un TUTOR que guía la redacción de resúmenes académicos (abstracts) para tesinas bibliográficas en psicopedagogía.
+        resumen: `Sos un TUTOR que guía la redacción de resúmenes académicos (abstracts) para tesinas bibliográficas en {DISC}.
 
 EN LUGAR DE ESCRIBIR EL RESUMEN, debés:
 1. Explicar la estructura estándar de un abstract para una tesina bibliográfica: objeto/tema, problema y objetivos, encuadre metodológico (revisión bibliográfica con criterios x e y), principales líneas desarrolladas, conclusiones centrales
@@ -326,7 +512,7 @@ ORIENTÁ CON PREGUNTAS:
 Usá voseo argentino.`
     },
 
-    revisor: `Sos un TUTOR que enseña a revisar y mejorar textos académicos de tesinas bibliográficas en psicopedagogía.
+    revisor: `Sos un TUTOR que enseña a revisar y mejorar textos académicos de tesinas bibliográficas en {DISC}.
 
 EN LUGAR DE SOLO SEÑALAR ERRORES, debés:
 1. Explicar los criterios de evaluación que estás usando
@@ -342,7 +528,7 @@ ESTRUCTURA TU RETROALIMENTACIÓN:
 
 CRITERIOS A EVALUAR EN TESINAS BIBLIOGRÁFICAS:
 - Claridad y coherencia argumentativa
-- Uso apropiado de terminología psicopedagógica
+- Uso apropiado de terminología {DISC_ADJ}
 - Fundamentación de afirmaciones (toda afirmación teórica necesita respaldo con citas)
 - Diálogo crítico entre autores (no sumatoria de resúmenes)
 - Posicionamiento propio frente a la literatura revisada
@@ -354,13 +540,119 @@ CRITERIOS A EVALUAR EN TESINAS BIBLIOGRÁFICAS:
 Usá voseo argentino.`
 };
 
+// Construye el set de prompts ya rellenado para una carrera
+function buildSystemPrompts(c) {
+    const gen = {};
+    for (const k in SYSTEM_PROMPT_TEMPLATES.generador) {
+        gen[k] = fillPrompt(SYSTEM_PROMPT_TEMPLATES.generador[k], c);
+    }
+    return {
+        orientacion: fillPrompt(SYSTEM_PROMPT_TEMPLATES.orientacion, c),
+        generador: gen,
+        revisor: fillPrompt(SYSTEM_PROMPT_TEMPLATES.revisor, c)
+    };
+}
+
+// Prompts activos según la carrera actual (se reconstruyen al cambiar de carrera)
+let SYSTEM_PROMPTS = buildSystemPrompts(getCarrera());
+
 // Estado de la aplicación
 let conversationHistory = {
     orientacion: []
 };
 
 // Event Listeners principales
+// ============================================================
+//  SELECCIÓN Y APLICACIÓN DE CARRERA EN LA INTERFAZ
+// ============================================================
+
+// Rellena un <select> conservando su primera opción ("-- Seleccioná --")
+function populateSelect(selectEl, items) {
+    if (!selectEl) return;
+    const prev = selectEl.value;
+    const placeholder = selectEl.querySelector('option[value=""]');
+    selectEl.innerHTML = '';
+    if (placeholder) selectEl.appendChild(placeholder);
+    items.forEach(it => {
+        const o = document.createElement('option');
+        o.value = it.value;
+        o.textContent = it.label;
+        selectEl.appendChild(o);
+    });
+    // Mantener la selección previa si sigue existiendo
+    if (prev && items.some(it => it.value === prev)) selectEl.value = prev;
+}
+
+// Aplica todos los textos/desplegables de la carrera dada a la interfaz
+function applyCarreraToUI(c) {
+    document.title = 'Asistente de Tesina - ' + c.carrera;
+
+    const set = (id, prop, val) => {
+        const el = document.getElementById(id);
+        if (el) el[prop] = val;
+    };
+
+    set('appTitle', 'textContent', c.tituloApp);
+    set('appSubtitle', 'textContent', c.subtitle);
+    set('welcomeTitle', 'textContent', c.welcomeH2);
+    set('welcomeIntro', 'innerHTML', c.welcomeIntro);
+    set('thematicAreaLabel', 'textContent', 'Área de la ' + c.disc + ' *');
+    set('footerCarrera', 'textContent', c.carrera + ' - Universidad Católica de La Plata');
+
+    // Desplegables de "Mi Tesina"
+    populateSelect(document.getElementById('thematicArea'), c.areas);
+    populateSelect(document.getElementById('philosophicalTradition'), c.marcos);
+
+    // Ejemplo dinámico en el título de la tesina
+    const titleInput = document.getElementById('thesisTitle');
+    if (titleInput) titleInput.placeholder = 'Ejemplo: ' + c.ejemploTitulo.replace(/^"|"$/g, '');
+
+    // Selector del encabezado
+    const sel = document.getElementById('carreraSelect');
+    if (sel) sel.value = c.id;
+}
+
+// Cambia de carrera: persiste, reconstruye prompts y refresca la interfaz
+function cambiarCarrera(id) {
+    if (!CARRERAS[id]) return;
+    setCarreraId(id);
+    SYSTEM_PROMPTS = buildSystemPrompts(getCarrera());
+    applyCarreraToUI(getCarrera());
+}
+
+function showCarreraScreen() {
+    const s = document.getElementById('carreraScreen');
+    if (s) s.style.display = 'flex';
+}
+function hideCarreraScreen() {
+    const s = document.getElementById('carreraScreen');
+    if (s) s.style.display = 'none';
+}
+
+// Inicializa el sistema de carreras: aplica la actual, conecta selectores
+// y muestra la pantalla de selección si el alumno todavía no eligió.
+function initCarreraSystem() {
+    // Selector del encabezado
+    const sel = document.getElementById('carreraSelect');
+    if (sel) sel.addEventListener('change', (e) => cambiarCarrera(e.target.value));
+
+    // Botones de la pantalla de selección inicial
+    document.querySelectorAll('.carrera-option').forEach(btn => {
+        btn.addEventListener('click', () => {
+            cambiarCarrera(btn.getAttribute('data-carrera'));
+            hideCarreraScreen();
+        });
+    });
+
+    // Aplicar la carrera actual (o la de por defecto)
+    applyCarreraToUI(getCarrera());
+
+    // Si no hay carrera elegida, mostrar la pantalla de selección
+    if (!getCarreraId()) showCarreraScreen();
+}
+
 document.addEventListener('DOMContentLoaded', function() {
+    initCarreraSystem();
     initApiKeySystem();
     initializeTabs();
     initializeAccordions();
@@ -560,7 +852,7 @@ Tema de la tesina bibliográfica: ${topic}
 
 ${context ? `Contexto adicional:\n${context}\n` : ''}
 
-Por favor, orientá a la estudiante para que desarrolle la sección solicitada con criterios de rigor académico apropiados para una tesina bibliográfica de licenciatura en psicopedagogía.
+Por favor, orientá a la estudiante para que desarrolle la sección solicitada con criterios de rigor académico apropiados para una tesina bibliográfica de licenciatura en ${getCarrera().disc}.
 `;
         
         // Llamar a la API con streaming: se va mostrando el texto a medida que llega
@@ -978,17 +1270,17 @@ function setupHelpButtons() {
                     <li>No demasiado largo (15-20 palabras máximo)</li>
                     <li>Puede incluir subtítulo para mayor precisión</li>
                 </ul>
-                <p><strong>Ejemplo:</strong> "La dislexia del desarrollo: una revisión bibliográfica de los abordajes psicopedagógicos contemporáneos desde la perspectiva neuropsicológica"</p>
+                <p><strong>Ejemplo:</strong> {EJEMPLO_TITULO}</p>
             `
         },
         area: {
             title: 'Área Temática',
             text: `
-                <p>Seleccioná el área principal de la psicopedagogía en la que se inscribe tu tesina.</p>
+                <p>Seleccioná el área principal de la {DISC} en la que se inscribe tu tesina.</p>
                 <p><strong>Considerá:</strong></p>
                 <ul>
                     <li>¿Cuál es el foco central de tu trabajo (clínico, institucional, evaluativo, interventivo)?</li>
-                    <li>¿Sobre qué población o problemática gira tu interés (infancia, adolescencia, adultos, DEA, neurodesarrollo, etc.)?</li>
+                    <li>¿Sobre qué población, corriente o problemática gira tu interés?</li>
                     <li>¿Desde qué marco de referencia teórico vas a leer el problema?</li>
                     <li>Podés tener áreas secundarias, pero elegí la principal</li>
                 </ul>
@@ -1001,7 +1293,7 @@ function setupHelpButtons() {
                 <ul>
                     <li>¿<strong>Por qué</strong> elegiste este tema y no otro?</li>
                     <li>¿<strong>Cómo lo delimitaste</strong>? ¿Qué aspectos vas a incluir y cuáles dejás fuera?</li>
-                    <li>¿Por qué es <strong>relevante</strong> para la psicopedagogía?</li>
+                    <li>¿Por qué es <strong>relevante</strong> para la {DISC}?</li>
                     <li>¿Por qué es <strong>manejable</strong> como tesina bibliográfica?</li>
                     <li>¿Por qué está <strong>acotado</strong> y no es demasiado amplio?</li>
                 </ul>
@@ -1025,7 +1317,7 @@ function setupHelpButtons() {
                     <li>No respondible con un sí/no simple</li>
                     <li>Que admita varias perspectivas/respuestas en la literatura</li>
                 </ul>
-                <p><strong>Ejemplos:</strong> "¿Qué aportes ofrece la perspectiva neuropsicológica al abordaje psicopedagógico de la dislexia?", "¿Cómo se articulan los enfoques psicogenético y socioconstructivista en las intervenciones contemporáneas en alfabetización inicial?"</p>
+                <p><strong>Ejemplos:</strong> {EJEMPLO_PREGUNTA}</p>
             `
         },
         justificacion: {
@@ -1034,7 +1326,7 @@ function setupHelpButtons() {
                 <p>Explicá por qué vale la pena hacer esta revisión bibliográfica:</p>
                 <ul>
                     <li><strong>Relevancia teórica:</strong> ¿Qué aporta a la sistematización del campo?</li>
-                    <li><strong>Relevancia profesional:</strong> ¿Qué utilidad tiene para la práctica psicopedagógica?</li>
+                    <li><strong>Relevancia profesional:</strong> ¿Qué utilidad tiene para la práctica {DISC_ADJ}?</li>
                     <li><strong>Relevancia social:</strong> ¿A qué problemática educativa o comunitaria responde?</li>
                     <li><strong>Originalidad:</strong> ¿Qué articulación, síntesis o lectura nueva ofrecés?</li>
                     <li><strong>Vacíos:</strong> ¿Qué debate o vacío en la literatura querés iluminar?</li>
@@ -1092,7 +1384,7 @@ function setupHelpButtons() {
                 <p><strong>Cómo organizarlo:</strong></p>
                 <ul>
                     <li>Por períodos históricos (clásicos vs. contemporáneos)</li>
-                    <li>Por perspectivas teóricas (neuropsicológica, psicogenética, etc.)</li>
+                    <li>Por perspectivas teóricas ({MARCOS_EJEMPLO}, etc.)</li>
                     <li>Por sub-temas (diagnóstico, intervención, etc.)</li>
                     <li>Por hallazgos convergentes/divergentes</li>
                 </ul>
@@ -1105,7 +1397,7 @@ function setupHelpButtons() {
                 <p>El marco teórico es el <strong>desarrollo conceptual de las categorías y autores</strong> con los que vas a leer tu problema.</p>
                 <p><strong>Componentes:</strong></p>
                 <ul>
-                    <li><strong>Autores principales:</strong> Referentes psicopedagógicos clásicos y contemporáneos relevantes</li>
+                    <li><strong>Autores principales:</strong> Referentes {DISC_ADJ_M}s clásicos y contemporáneos relevantes</li>
                     <li><strong>Conceptos clave:</strong> Categorías centrales para tu análisis</li>
                     <li><strong>Desarrollo conceptual:</strong> Articulación crítica de los conceptos</li>
                     <li><strong>Posicionamiento:</strong> Desde qué perspectiva leés el problema</li>
@@ -1133,7 +1425,7 @@ function setupHelpButtons() {
                 <ul>
                     <li>¿Qué respuesta provisoria darías hoy a tu pregunta-problema?</li>
                     <li>¿Qué síntesis pensás que vas a poder ofrecer al final?</li>
-                    <li>¿Qué aportes esperás hacer al campo psicopedagógico?</li>
+                    <li>¿Qué aportes esperás hacer al campo {DISC_ADJ_M}?</li>
                     <li>¿Qué nuevas líneas de investigación creés que se podrían abrir?</li>
                 </ul>
                 <p><strong>Recordá:</strong> son hipótesis, no certezas. La revisión bibliográfica puede llevarte a conclusiones distintas o más matizadas.</p>
@@ -1181,7 +1473,7 @@ function setupHelpButtons() {
             
             if (content) {
                 document.getElementById('helpTitle').textContent = content.title;
-                document.getElementById('helpText').innerHTML = content.text;
+                document.getElementById('helpText').innerHTML = disc(content.text);
                 helpPanel.classList.add('active');
             }
         });
@@ -1420,7 +1712,7 @@ ${data.thesisSubtitle ? 'Subtítulo: ' + data.thesisSubtitle : ''}
 
 ÁREA TEMÁTICA
 
-Área de la psicopedagogía: ${data.thematicArea || 'No especificado'}
+Área de la {DISC}: ${data.thematicArea || 'No especificado'}
 Marco teórico de referencia: ${data.philosophicalTradition || 'No especificado'}
 
 ═══════════════════════════════════════════════════════════════
@@ -1519,7 +1811,7 @@ Fecha de generación: ${new Date().toLocaleDateString('es-AR', {
     `.trim();
     
     // Crear y descargar archivo
-    const blob = new Blob([documentContent], { type: 'text/plain;charset=utf-8' });
+    const blob = new Blob([disc(documentContent)], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -1711,7 +2003,7 @@ Problema: ${data.problemStatement || 'No especificado'}
 Área: ${data.thematicArea || 'No especificado'}
 
 EN LUGAR DE LISTAR AUTORES, guiala:
-1. Explicale criterios para seleccionar autores y referentes psicopedagógicos relevantes (clásicos vs contemporáneos, disciplinares vs interdisciplinares)
+1. Explicale criterios para seleccionar autores y referentes {DISC_ADJ_M}s relevantes (clásicos vs contemporáneos, disciplinares vs interdisciplinares)
 2. Enseñale a buscar en bases académicas
 3. Hacele preguntas: ¿Qué corriente teórica enmarca tu problema? ¿Quiénes son los referentes clásicos y los actuales?
 4. Proponele que identifique 3-5 autores clave y justifique por qué cada uno
@@ -1856,8 +2148,8 @@ Usá voseo argentino.`;
     
     try {
         const response = await callOpenRouterAPI(
-            'Sos un TUTOR de tesinas bibliográficas en psicopedagogía. Tu rol es GUIAR a la estudiante paso a paso, NO hacer el trabajo por ella. Enseñale a pensar y desarrollar su propio trabajo. La tesina es una INVESTIGACIÓN BIBLIOGRÁFICA, NO de campo. Usá voseo argentino.',
-            [{ role: 'user', parts: [{ text: prompt }] }]
+            disc('Sos un TUTOR de tesinas bibliográficas en {DISC}. Tu rol es GUIAR a la estudiante paso a paso, NO hacer el trabajo por ella. Enseñale a pensar y desarrollar su propio trabajo. La tesina es una INVESTIGACIÓN BIBLIOGRÁFICA, NO de campo. Usá voseo argentino.'),
+            [{ role: 'user', parts: [{ text: disc(prompt) }] }]
         );
         
         const cleanText = cleanMarkdown(response);

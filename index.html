@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Asistente de Tesina - Licenciatura en Psicopedagogía</title>
+    <title>Asistente de Tesina - UCALP</title>
     <link rel="stylesheet" href="styles.css">
     <style>
         /* Estilos para Modal de API Key */
@@ -185,8 +185,16 @@
                 <div class="logo-section">
                     <img src="logo-ucalp.png" alt="Universidad Católica de La Plata" class="university-logo">
                     <div class="title-section">
-                        <h1>Asistente de Tesina Psicopedagógica</h1>
-                        <p class="subtitle">Universidad Católica de La Plata - Licenciatura en Psicopedagogía</p>
+                        <h1 id="appTitle">Asistente de Tesina</h1>
+                        <p class="subtitle" id="appSubtitle">Universidad Católica de La Plata</p>
+                    </div>
+                    <div class="carrera-switcher">
+                        <label for="carreraSelect">Carrera:</label>
+                        <select id="carreraSelect" class="carrera-select">
+                            <option value="psicologia">🧠 Psicología</option>
+                            <option value="psicopedagogia">🧩 Psicopedagogía</option>
+                            <option value="filosofia">📜 Filosofía</option>
+                        </select>
                     </div>
                 </div>
                 <nav class="nav-tabs">
@@ -206,8 +214,8 @@
             <!-- Tab: Inicio -->
             <div id="inicio" class="tab-content active">
                 <div class="welcome-section">
-                    <h2>Bienvenida al Asistente de Tesina en Psicopedagogía</h2>
-                    <p class="intro">Esta plataforma está diseñada especialmente para estudiantes de la Licenciatura en Psicopedagogía de la Universidad Católica de La Plata que se encuentran elaborando su trabajo final de carrera bajo la modalidad de <strong>investigación bibliográfica</strong>. Te acompaña en cada etapa: desde la elección y delimitación del tema hasta las conclusiones finales, con un enfoque tutorial que te guía a pensar tu propio trabajo.</p>
+                    <h2 id="welcomeTitle">Bienvenida al Asistente de Tesina</h2>
+                    <p class="intro" id="welcomeIntro">Esta plataforma acompaña a estudiantes de la Universidad Católica de La Plata que elaboran su trabajo final de carrera bajo la modalidad de <strong>investigación bibliográfica</strong>. Te acompaña en cada etapa: desde la elección y delimitación del tema hasta las conclusiones finales, con un enfoque tutorial que te guía a pensar tu propio trabajo.</p>
                     
                     <div class="features-grid">
                         <div class="feature-card">
@@ -228,7 +236,7 @@
                         <div class="feature-card">
                             <span class="feature-icon">📖</span>
                             <h3>Normas APA</h3>
-                            <p>Guías y recursos sobre formato APA 7ª edición, estándar en investigación psicopedagógica</p>
+                            <p>Guías y recursos sobre formato APA 7ª edición, estándar en investigación académica</p>
                         </div>
                     </div>
 
@@ -253,7 +261,7 @@
                 
                 <div class="orientation-container">
                     <div class="chat-section">
-                        <h3>Consultá con el Tutor Psicopedagógico</h3>
+                        <h3>Consultá con el Tutor de tu Tesina</h3>
                         <p class="helper-text">Hacé preguntas sobre cómo elegir un tema, formular un problema, buscar antecedentes, construir el marco teórico o cualquier aspecto de tu tesina bibliográfica</p>
                         
                         <div id="chatOrientation" class="chat-box"></div>
@@ -277,7 +285,7 @@
                                 <div class="accordion-content">
                                     <p>Un buen tema para tesina bibliográfica debe ser:</p>
                                     <ul>
-                                        <li><strong>Relevante:</strong> Importante para la psicopedagogía como disciplina o para la práctica profesional</li>
+                                        <li><strong>Relevante:</strong> Importante para tu disciplina o para la práctica profesional</li>
                                         <li><strong>Manejable:</strong> Abordable con la bibliografía disponible y en el tiempo del que disponés</li>
                                         <li><strong>Acotado:</strong> Suficientemente delimitado para profundizar (no demasiado amplio)</li>
                                         <li><strong>Interesante para vos:</strong> Vas a pasar varios meses con el tema, elegí algo que te motive</li>
@@ -306,7 +314,7 @@
                                         <li>Buscá en bases académicas: SciELO, ERIC, Redalyc, Dialnet, PsycINFO</li>
                                         <li>Consultá repositorios institucionales: SEDICI (UNLP), Repositorio UBA, CONICET Digital</li>
                                         <li>Prioriza fuentes académicas: libros de editoriales reconocidas, revistas indexadas, tesis</li>
-                                        <li>Combiná clásicos del campo (Paín, Fernández, Visca, Vygotsky, Piaget) con producción reciente (últimos 5-10 años)</li>
+                                        <li>Combiná clásicos del campo con producción reciente (últimos 5-10 años)</li>
                                         <li>Llevá un registro organizado desde el inicio (usá Zotero o Mendeley)</li>
                                         <li>Evaluá la calidad: ¿es revista revisada por pares? ¿el autor es reconocido en el campo?</li>
                                     </ul>
@@ -386,12 +394,12 @@
                         </div>
                         <div class="form-field">
                             <label for="thesisTitle">Título (puede modificarse posteriormente) *</label>
-                            <input type="text" id="thesisTitle" class="form-input" placeholder="Ejemplo: La dislexia del desarrollo: una revisión bibliográfica de los abordajes psicopedagógicos contemporáneos">
+                            <input type="text" id="thesisTitle" class="form-input" placeholder="Escribí un título claro que refleje tu tema y deje ver que es una revisión bibliográfica">
                             <button id="aiTitleSuggestion" class="ai-assist-btn">✨ Orientación para el título</button>
                         </div>
                         <div class="form-field">
                             <label for="thesisSubtitle">Subtítulo (opcional)</label>
-                            <input type="text" id="thesisSubtitle" class="form-input" placeholder="Aportes desde la perspectiva neuropsicológica y psicogenética">
+                            <input type="text" id="thesisSubtitle" class="form-input" placeholder="Subtítulo opcional para precisar el enfoque o el recorte">
                         </div>
                     </div>
 
@@ -404,7 +412,7 @@
                         </div>
                         <div class="form-grid">
                             <div class="form-field">
-                                <label for="thematicArea">Área de la psicopedagogía *</label>
+                                <label for="thematicArea" id="thematicAreaLabel">Área temática *</label>
                                 <select id="thematicArea" class="form-select">
                                     <option value="">-- Seleccioná una opción --</option>
                                     <option value="dificultades-aprendizaje">Dificultades específicas del aprendizaje (DEA)</option>
@@ -452,7 +460,7 @@
                         <div class="form-field">
                             <label for="themeSelection">Justificación de la elección y delimitación * (200-400 palabras)</label>
                             <textarea id="themeSelection" class="form-textarea" rows="8" 
-                                placeholder="Explicá: ¿por qué elegiste este tema? ¿Cómo lo delimitaste? ¿Qué aspectos vas a incluir y cuáles vas a dejar fuera? ¿Por qué es relevante para la psicopedagogía? ¿Por qué es manejable como tesina bibliográfica?"></textarea>
+                                placeholder="Explicá: ¿por qué elegiste este tema? ¿Cómo lo delimitaste? ¿Qué aspectos vas a incluir y cuáles vas a dejar fuera? ¿Por qué es relevante para tu disciplina? ¿Por qué es manejable como tesina bibliográfica?"></textarea>
                             <div class="char-counter">
                                 <span id="themeSelectionCount">0</span> palabras
                             </div>
@@ -470,7 +478,7 @@
                         <div class="form-field">
                             <label for="problemStatement">Descripción del problema * (200-400 palabras)</label>
                             <textarea id="problemStatement" class="form-textarea" rows="8" 
-                                placeholder="Describí la problemática psicopedagógica que vas a abordar bibliográficamente. ¿Qué situación, debate o vacío en la literatura querés indagar? ¿Por qué es un problema de interés disciplinar?"></textarea>
+                                placeholder="Describí la problemática que vas a abordar bibliográficamente. ¿Qué situación, debate o vacío en la literatura querés indagar? ¿Por qué es un problema de interés disciplinar?"></textarea>
                             <div class="char-counter">
                                 <span id="problemCount">0</span> palabras
                             </div>
@@ -479,7 +487,7 @@
                         <div class="form-field">
                             <label for="researchQuestion">Pregunta-problema de investigación *</label>
                             <input type="text" id="researchQuestion" class="form-input" 
-                                placeholder="Ejemplo: ¿Qué aportes ofrece la perspectiva neuropsicológica al abordaje psicopedagógico de la dislexia del desarrollo?">
+                                placeholder="Ejemplo: ¿Qué aportes ofrece [enfoque teórico] al abordaje de [tu problema]?">
                         </div>
                         <div class="form-field">
                             <label for="secondaryQuestions">Preguntas secundarias (opcional)</label>
@@ -498,7 +506,7 @@
                         <div class="form-field">
                             <label for="justification">¿Por qué es importante indagar este tema? * (200-400 palabras)</label>
                             <textarea id="justification" class="form-textarea" rows="8" 
-                                placeholder="Explicá la relevancia teórica, profesional y/o social de tu trabajo. ¿Qué aporta al campo psicopedagógico? ¿Por qué vale la pena hacer esta revisión bibliográfica?"></textarea>
+                                placeholder="Explicá la relevancia teórica, profesional y/o social de tu trabajo. ¿Qué aporta a tu campo disciplinar? ¿Por qué vale la pena hacer esta revisión bibliográfica?"></textarea>
                             <div class="char-counter">
                                 <span id="justificationCount">0</span> palabras
                             </div>
@@ -516,17 +524,17 @@
                         <div class="form-field">
                             <label for="generalObjective">Objetivo general * (un solo objetivo)</label>
                             <textarea id="generalObjective" class="form-textarea" rows="3" 
-                                placeholder="Ejemplo: Analizar los aportes de la perspectiva neuropsicológica al abordaje psicopedagógico de la dislexia del desarrollo, a partir de la revisión bibliográfica de producciones académicas contemporáneas"></textarea>
+                                placeholder="Ejemplo: Analizar los aportes de [enfoque teórico] a [tu problema], a partir de la revisión bibliográfica de producciones académicas contemporáneas"></textarea>
                             <button id="aiObjectiveHelp" class="ai-assist-btn">✨ Sugerir objetivo general</button>
                         </div>
                         <div class="form-field">
                             <label for="specificObjectives">Objetivos específicos * (3-5 objetivos)</label>
                             <textarea id="specificObjectives" class="form-textarea" rows="6" 
                                 placeholder="Ejemplo:
-1. Caracterizar la dislexia del desarrollo desde la perspectiva neuropsicológica
-2. Describir los principales modelos explicativos contemporáneos
-3. Identificar los aportes de la neuropsicología al diagnóstico psicopedagógico
-4. Analizar las estrategias de intervención derivadas de este marco"></textarea>
+1. Caracterizar [tu objeto de estudio] desde [el enfoque teórico elegido]
+2. Describir los principales modelos o posiciones contemporáneos
+3. Identificar los aportes de [ese marco] a tu problema
+4. Analizar las implicancias o estrategias derivadas de ese marco"></textarea>
                             <button id="aiSpecificObjectivesHelp" class="ai-assist-btn">✨ Sugerir objetivos específicos</button>
                         </div>
                     </div>
@@ -577,13 +585,13 @@
                         <div class="form-field">
                             <label for="mainAuthors">Autores y referentes principales *</label>
                             <textarea id="mainAuthors" class="form-textarea" rows="4" 
-                                placeholder="Listá los autores principales de tu marco teórico, con una breve justificación de su relevancia (ej: Sara Paín, Alicia Fernández, Jorge Visca, Emilia Ferreiro, Vygotsky, Piaget, Cuetos, Defior...)"></textarea>
+                                placeholder="Listá los autores principales de tu marco teórico, con una breve justificación de su relevancia (referentes clásicos y contemporáneos de tu campo)"></textarea>
                             <button id="aiAuthorsHelp" class="ai-assist-btn">✨ Sugerir autores relevantes</button>
                         </div>
                         <div class="form-field">
                             <label for="keyConcepts">Conceptos clave *</label>
                             <textarea id="keyConcepts" class="form-textarea" rows="4" 
-                                placeholder="Enumerá los conceptos centrales que vas a desarrollar (ej: dislexia, conciencia fonológica, procesamiento lectoescritor, intervención psicopedagógica, ruta visual y fonológica)"></textarea>
+                                placeholder="Enumerá los conceptos centrales que vas a desarrollar en tu marco teórico"></textarea>
                             <button id="aiConceptsHelp" class="ai-assist-btn">✨ Identificar conceptos clave</button>
                         </div>
                         <div class="form-field">
@@ -823,7 +831,7 @@ Coll, C. (Ed.). (2010). Desarrollo, aprendizaje y enseñanza en la educación se
                                         <li><strong>Análisis del marco teórico desarrollado:</strong> síntesis crítica, no repetición</li>
                                         <li><strong>Respuesta a la pregunta-problema:</strong> ¿qué respondés con tu indagación?</li>
                                         <li><strong>Síntesis de ideas centrales:</strong> hilos articuladores del trabajo</li>
-                                        <li><strong>Aportes:</strong> contribución al campo psicopedagógico</li>
+                                        <li><strong>Aportes:</strong> contribución a tu campo disciplinar</li>
                                         <li><strong>Limitaciones:</strong> alcances y restricciones honestamente reconocidos</li>
                                         <li><strong>Nuevas líneas de investigación:</strong> preguntas que quedan abiertas</li>
                                     </ul>
@@ -912,7 +920,7 @@ Coll, C. (Ed.). (2010). Desarrollo, aprendizaje y enseñanza en la educación se
                                 type="text" 
                                 id="thesisTopic" 
                                 class="text-input" 
-                                placeholder="Ej: Aportes de la neuropsicología al abordaje psicopedagógico de la dislexia"
+                                placeholder="Ej: el tema o problema de tu tesina"
                             >
                         </div>
 
@@ -952,7 +960,7 @@ Coll, C. (Ed.). (2010). Desarrollo, aprendizaje y enseñanza en la educación se
                     <h3>💡 Consejos para mejores resultados</h3>
                     <ul>
                         <li>Sé específica con tu tema y los aspectos que querés indagar</li>
-                        <li>Mencioná autores, marcos teóricos o corrientes psicopedagógicas relevantes</li>
+                        <li>Mencioná autores, marcos teóricos o corrientes de tu campo relevantes</li>
                         <li>Recordá que el asistente te guía con preguntas y criterios, no escribe tu trabajo</li>
                         <li>Tomá las orientaciones como referencia y desarrollá tu propio contenido</li>
                         <li>Usá el revisor para mejorar lo que vayas escribiendo</li>
@@ -1020,7 +1028,7 @@ Coll, C. (Ed.). (2010). Desarrollo, aprendizaje y enseñanza en la educación se
                 <div class="resources-container">
                     <div class="resource-section apa-main">
                         <h3>📚 Normas APA (7ª Edición)</h3>
-                        <p class="apa-intro">La Universidad Católica de La Plata utiliza el formato APA para trabajos académicos en psicopedagogía. Acá encontrás las principales directrices.</p>
+                        <p class="apa-intro">La Universidad Católica de La Plata utiliza el formato APA para trabajos académicos. Acá encontrás las principales directrices.</p>
                         
                         <div class="apa-sections">
                             <div class="apa-card">
@@ -1140,7 +1148,7 @@ Coll, C. (Ed.). (2010). Desarrollo, aprendizaje y enseñanza en la educación se
                         <div class="tools-grid">
                             <div class="tool-card">
                                 <h4>Zotero</h4>
-                                <p><strong>Gratuito y de código abierto.</strong> Excelente para investigación psicopedagógica. Permite organizar referencias y generar bibliografías en formato APA automáticamente. Integración con Word y navegadores.</p>
+                                <p><strong>Gratuito y de código abierto.</strong> Excelente para investigación académica. Permite organizar referencias y generar bibliografías en formato APA automáticamente. Integración con Word y navegadores.</p>
                                 <p class="tool-highlight">✓ Recomendado para estudiantes UCALP</p>
                             </div>
                             <div class="tool-card">
@@ -1204,9 +1212,34 @@ Coll, C. (Ed.). (2010). Desarrollo, aprendizaje y enseñanza en la educación se
         <footer class="footer">
             <div id="apiKeyStatus" class="api-status"></div>
             <p><strong>Seminario: Trabajo Final de Carrera</strong></p>
-            <p>Licenciatura en Psicopedagogía - Universidad Católica de La Plata</p>
+            <p id="footerCarrera">Universidad Católica de La Plata</p>
             <p class="disclaimer">Herramienta de apoyo académico para la elaboración de tesinas bibliográficas. El contenido generado por IA debe ser revisado, contrastado y adaptado por la estudiante bajo supervisión del director/a de tesina.</p>
         </footer>
+    </div>
+
+    <!-- Pantalla de selección de carrera -->
+    <div id="carreraScreen" class="carrera-screen" style="display: none;">
+        <div class="carrera-screen-box">
+            <img src="logo-ucalp.png" alt="Universidad Católica de La Plata" class="carrera-screen-logo">
+            <h2>Asistente de Tesina</h2>
+            <p class="carrera-screen-uni">Universidad Católica de La Plata</p>
+            <p class="carrera-screen-sub">Para empezar, elegí tu carrera:</p>
+            <div class="carrera-options">
+                <button class="carrera-option" data-carrera="psicologia">
+                    <span class="carrera-option-icon">🧠</span>
+                    <span class="carrera-option-name">Psicología</span>
+                </button>
+                <button class="carrera-option" data-carrera="psicopedagogia">
+                    <span class="carrera-option-icon">🧩</span>
+                    <span class="carrera-option-name">Psicopedagogía</span>
+                </button>
+                <button class="carrera-option" data-carrera="filosofia">
+                    <span class="carrera-option-icon">📜</span>
+                    <span class="carrera-option-name">Filosofía</span>
+                </button>
+            </div>
+            <p class="carrera-screen-note">Vas a poder cambiar de carrera cuando quieras, desde el encabezado.</p>
+        </div>
     </div>
 
     <!-- Modal de configuración de API Key -->
